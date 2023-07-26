@@ -90,9 +90,86 @@
         <!-- Back to Top -->
         <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
     </div>
+    <div class="modal fade" id="bookingModal" tabindex="-1" role="dialog" aria-labelledby="bookingModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bookingModalLabel">Booking Form</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <!-- Your form fields here -->
+                        <div class="form-group">
+                            <label for="name">Your Name</label>
+                            <input type="text" class="form-control" id="name" placeholder="Your Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Your Email</label>
+                            <input type="email" class="form-control" id="email" placeholder="Your Email">
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group date" id="date3" data-target-input="nearest">
+                                <input type="text" class="form-control datetimepicker-input" data-target="#date3" />
+                                <div class="input-group-append" data-target="#date3" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                            <label for="date3">Check In</label>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group date" id="date4" data-target-input="nearest">
+                                <input type="text" class="form-control datetimepicker-input" data-target="#date4" />
+                                <div class="input-group-append" data-target="#date4" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                            <label for="date4">Check Out</label>
+                        </div>
+                        <div class="form-group">
+                            <label for="select1">Select Adult</label>
+                            <select class="form-select" id="select1">
+                                <option value="1">Adult 1</option>
+                                <option value="2">Adult 2</option>
+                                <option value="3">Adult 3</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="select2">Select Child</label>
+                            <select class="form-select" id="select2">
+                                <option value="1">Child 1</option>
+                                <option value="2">Child 2</option>
+                                <option value="3">Child 3</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="select3">Select A Room</label>
+                            <select class="form-select" id="select3">
+                                <option value="1">Room 1</option>
+                                <option value="2">Room 2</option>
+                                <option value="3">Room 3</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Special Request</label>
+                            <textarea class="form-control" placeholder="Special Request" id="message" style="height: 100px"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('lib/wow/wow.min.js') }}"></script>
     <script src="{{ asset('lib/easing/easing.min.js') }}"></script>
