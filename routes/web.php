@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ListHotalController;
+use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,3 +21,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/',[ListHotalController::class,'index']);
 Route::post('/',[ListHotalController::class,'index']);
+Route::post('/process-cash-payment', [PaymentController::class,'processCashPayment']);
+Route::post('/send-otp', [PaymentController::class,'sendOtp']);
+// Route::post('/send-otp', 'OtpController@sendOtp');
+Route::post('/verify-otp',[PaymentController::class,'verifyOtp']);
+
