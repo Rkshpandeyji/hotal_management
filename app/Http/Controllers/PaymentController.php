@@ -8,12 +8,21 @@ use App\Models\Booking;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use App\Mail\OtpMail;
-
+use App\Models\Room;
+use Carbon\Carbon;
 
 class PaymentController extends Controller
 {
     public function processCashPayment(Request $request)
     {
+
+        if ($request->input('payment_method') == 'online_payment') {
+            $payment_id = $request->input('payment_id');
+            $booking_status = "confirm";
+        } else {
+            $payment_id = 0;
+            $booking_status = "Not confirm";
+        }
         // dd($request->all());
         $booking = new Booking();
         $booking->name = $request->input('name');
@@ -24,48 +33,65 @@ class PaymentController extends Controller
         $booking->check_out = $request->input('check_out');
         $booking->payment_method = $request->input('payment_method');
         $booking->room_code = $request->input('room_code');
+        $booking->payment_id = $payment_id;
+        $booking->booking_status = $booking_status;
         $booking->status = 1;
-        $booking->save();
+        if ($booking->save()) {
+            // Booking saved successfully
 
-        // Return a response (optional) if you need to send back data to the frontend
-        return response()->json(['success' => true, 'message' => 'Payment successful (Cash)!']);
-    }
+            $paymentMethod = $request->input('payment_method');
 
-    public function sendOtp(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email',
-        ]);
+            if ($paymentMethod === 'online_payment') {
+                // If payment method is online_payment, update the available_count of the room
+                $roomCode = $request->input('room_code');
+                $room = Room::where('room_code', $roomCode)->first();
 
-        $otp = mt_rand(100000, 999999);
+                if ($room) {
+                    $room->available_count -= 1; // Decrement the available_count by 1
+                    if ($room->save()) {
+                        Mail::to($request->input('email'))->send(new \App\Mail\RoomConfirmationMail(
+                            $request->input('room_code'),
+                            $request->input('price'),
+                            $request->input('email'),
+                            $request->input('name'),
+                            $request->input('number'),
+                            $request->input('check_in'),
+                            $request->input('check_out'),
+                            $request->input('payment_method'),
+                            $booking_status
+                        ));
+                    }
+                }
+                return response()->json(['success' => true, 'message' => 'Payment successful!']);
+            } else {
+                Mail::to($request->input('email'))->send(new \App\Mail\RoomConfirmationMail(
+                    $request->input('room_code'),
+                    $request->input('price'),
+                    $request->input('email'),
+                    $request->input('name'),
+                    $request->input('number'),
+                    $request->input('check_in'),
+                    $request->input('check_out'),
+                    $request->input('payment_method'),
+                    $booking_status
+                ));
+            }
+            $currentDatetime = Carbon::now();
 
-        $request->session()->put('otp', $otp);
-
-        Mail::to($request->email)->send(new OtpMail($otp));
-
-        // Return a response indicating success
-        return response()->json(['success' => true]);
-    }
-
-    public function verifyOtp(Request $request)
-    {
-        // Validate the OTP and email fields
-        $request->validate([
-            'email' => 'required|email',
-            'otp' => 'required|string',
-        ]);
-
-        // Get the stored OTP from the session
-        $storedOtp = $request->session()->get('otp');
-
-        // Verify if the entered OTP matches the stored OTP
-        if ($storedOtp === $request->otp) {
-            // OTP is valid, remove it from the session
-            $request->session()->forget('otp');
-
-            return response()->json(['success' => true]);
+            // Get all bookings that have an expiry date less than or equal to the current datetime
+            $expiredBookings = Booking::where('check_out', '<=', $currentDatetime)->get();
+    
+            foreach ($expiredBookings as $booking) {
+                // Increment the available_count for the corresponding room
+                $room = Room::where('room_code', $booking->room_code)->first();
+    
+                if ($room) {
+                    $room->available_count++;
+                    $room->save();
+                }
+            }
+    
+            $this->info('Room counts updated for expired bookings.');
         }
-
-        return response()->json(['error' => 'Invalid OTP'], 422);
     }
 }

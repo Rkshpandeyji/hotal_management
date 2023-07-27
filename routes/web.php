@@ -22,7 +22,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/',[ListHotalController::class,'index']);
 Route::post('/',[ListHotalController::class,'index']);
 Route::post('/process-cash-payment', [PaymentController::class,'processCashPayment']);
-Route::post('/send-otp', [PaymentController::class,'sendOtp']);
-// Route::post('/send-otp', 'OtpController@sendOtp');
-Route::post('/verify-otp',[PaymentController::class,'verifyOtp']);
+Route::get('/Cron', [ListHotalController::class,'Cron']);
+// // Route::post('/send-otp', 'OtpController@sendOtp');
+// Route::post('/verify-otp',[PaymentController::class,'verifyOtp']);
+// Route::post('/store-payment-response', [PaymentController::class,'storePaymentResponse']);
+
 

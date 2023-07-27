@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 27, 2023 at 09:57 AM
+-- Generation Time: Jul 27, 2023 at 04:02 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -38,6 +38,8 @@ CREATE TABLE `bookings` (
   `check_in` varchar(25) DEFAULT NULL,
   `check_out` varchar(25) DEFAULT NULL,
   `status` int(2) DEFAULT NULL,
+  `payment_id` varchar(255) DEFAULT NULL,
+  `booking_status` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -46,9 +48,21 @@ CREATE TABLE `bookings` (
 -- Dumping data for table `bookings`
 --
 
-INSERT INTO `bookings` (`id`, `name`, `email`, `number`, `price`, `room_code`, `payment_method`, `check_in`, `check_out`, `status`, `created_at`, `updated_at`) VALUES
-(4, 'rakesh RAKESH', 'rkshpandeyji123@gmail.com', '8445188705', '100.00', 'R2H3', 'cash', '07/27/2023 12:32 PM', '07/27/2023 12:32 PM', 1, '2023-07-27 01:32:26', '2023-07-27 01:32:26'),
-(5, 'rakesh Pandey', 'rkshpandeyji123@gmail.com', '8445188705', '100.00', 'R2H3', 'cash', '07/27/2023 12:41 PM', '07/27/2023 12:41 PM', 1, '2023-07-27 01:41:46', '2023-07-27 01:41:46');
+INSERT INTO `bookings` (`id`, `name`, `email`, `number`, `price`, `room_code`, `payment_method`, `check_in`, `check_out`, `status`, `payment_id`, `booking_status`, `created_at`, `updated_at`) VALUES
+(4, 'rakesh RAKESH', 'rkshpandeyji123@gmail.com', '8445188705', '100.00', 'R2H3', 'cash', '07/27/2023 12:32 PM', '07/27/2023 12:32 PM', 1, NULL, NULL, '2023-07-27 01:32:26', '2023-07-27 01:32:26'),
+(5, 'rakesh Pandey', 'rkshpandeyji123@gmail.com', '8445188705', '100.00', 'R2H3', 'cash', '07/27/2023 12:41 PM', '07/27/2023 12:41 PM', 1, NULL, NULL, '2023-07-27 01:41:46', '2023-07-27 01:41:46'),
+(6, 'rakesh Pandey', 'rkshpandeyji123@gmail.com', '08445188705', '100.00', 'R2H3', 'cash', '07/27/2023 3:42 PM', '07/27/2023 3:42 PM', 1, NULL, NULL, '2023-07-27 04:43:03', '2023-07-27 04:43:03'),
+(7, 'rakesh Pandey', 'rkshpandeyji123@gmail.com', '8445188705', '100.00', 'R2H3', 'cash', '07/27/2023 4:28 PM', '07/27/2023 4:28 PM', 1, NULL, NULL, '2023-07-27 05:28:55', '2023-07-27 05:28:55'),
+(8, 'rakesh Pandey', 'rkshpandeyji123@gmail.com', '8445188705', '100.00', NULL, 'online_payment', NULL, NULL, 1, '0', 'Not confirm', '2023-07-27 06:48:40', '2023-07-27 06:48:40'),
+(9, 'rakesh Pandey', 'rkshpandeyji123@gmail.com', '8445188705', '100.00', 'R2H3', 'online_payment', NULL, NULL, 1, '0', 'Not confirm', '2023-07-27 06:51:20', '2023-07-27 06:51:20'),
+(10, 'rakesh Pandey', 'rkshpandeyji123@gmail.com', '8445188705', '100.00', 'R2H3', 'online_payment', NULL, NULL, 1, '0', 'Not confirm', '2023-07-27 06:53:26', '2023-07-27 06:53:26'),
+(11, 'rakesh Pandey', 'rkshpandeyji123@gmail.com', '5874514870', '100.00', 'R2H3', 'online_payment', '07/27/2023 5:55 PM', '07/27/2023 5:55 PM', 1, '0', 'Not confirm', '2023-07-27 06:55:41', '2023-07-27 06:55:41'),
+(12, 'rakesh Pandey', 'rkshpandeyji123@gmail.com', '8445188705', '100.00', 'R2H3', 'cash', '07/27/2023 5:56 PM', '07/27/2023 5:56 PM', 1, '0', 'Not confirm', '2023-07-27 06:56:37', '2023-07-27 06:56:37'),
+(13, 'rakesh Pandey', 'rkshpandeyji123@gmail.com', '8445188705', '100.00', 'R2H3', 'online_payment', '07/27/2023 5:57 PM', '07/27/2023 5:57 PM', 1, 'pay_MIpEPJrRoX64gY', 'confirm', '2023-07-27 06:57:38', '2023-07-27 06:57:38'),
+(14, 'rakesh Pandey', 'rkshpandeyji123@gmail.com', '8445188705', '100.00', 'R2H3', 'online_payment', '07/27/2023 6:01 PM', '07/27/2023 6:01 PM', 1, 'pay_MIpJgAImEtvCe7', 'confirm', '2023-07-27 07:02:37', '2023-07-27 07:02:37'),
+(15, 'rakesh Pandey', 'rkshpandeyji123@gmail.com', '8445188705', '100.00', 'R2H3', 'online_payment', '07/27/2023 6:10 PM', '07/27/2023 6:10 PM', 1, 'pay_MIpSP3kI3zMKUQ', 'confirm', '2023-07-27 07:10:53', '2023-07-27 07:10:53'),
+(16, 'rakesh Pandey', 'rkshpandeyji123@gmail.com', '8445188705', '100.00', 'R2H3', 'cash', '07/27/2023 6:12 PM', '07/27/2023 6:12 PM', 1, '0', 'Not confirm', '2023-07-27 07:12:37', '2023-07-27 07:12:37'),
+(17, 'rakesh Pandey', 'rkshpandeyji123@gmail.com', '8445188705', '100.00', 'R2H3', 'online_payment', '07/28/2023 6:20 PM', '07/28/2023 6:20 PM', 1, 'pay_MIpdW7GwMdzB33', 'confirm', '2023-07-27 07:21:25', '2023-07-27 07:21:25');
 
 -- --------------------------------------------------------
 
@@ -177,7 +191,7 @@ INSERT INTO `rooms` (`id`, `room_code`, `name`, `status`, `hotal_id`, `room_type
 (3, 'R1H3', 'Super Deluxe', '1', 1, 3, 5, '100', 'Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam sed stet lorem.', 'img/room-3.jpg', 'Night', '2023-07-26 18:28:46', '2023-07-26 18:28:46'),
 (4, 'R2H1', 'Junior Suite', '1', 2, 1, 5, '100', 'Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam sed stet lorem.', 'img/room-1.jpg', 'night', '2023-07-26 18:24:22', '2023-07-26 18:24:22'),
 (5, 'R2H2', 'Executive Suite', '1', 2, 2, 5, '100', 'Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam sed stet lorem.', 'img/room-2.jpg', 'Night', '2023-07-26 18:27:22', '2023-07-26 18:27:22'),
-(6, 'R2H3', 'Super Deluxe', '1', 2, 3, 5, '100', 'Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam sed stet lorem.', 'img/room-3.jpg', 'Night', '2023-07-26 18:28:46', '2023-07-26 18:28:46');
+(6, 'R2H3', 'Super Deluxe', '1', 2, 3, 4, '100', 'Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam sed stet lorem.', 'img/room-3.jpg', 'Night', '2023-07-26 18:28:46', '2023-07-27 07:21:25');
 
 -- --------------------------------------------------------
 
@@ -289,7 +303,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`

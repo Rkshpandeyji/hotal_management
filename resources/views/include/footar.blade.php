@@ -108,6 +108,7 @@
                       <!-- Your form fields here -->
                       <input type="hidden" id="room_code" name="room_code" value="{{$room->room_code}}">
                       <input type="hidden" id="price" name="price" value="{{$room->price}}">
+                      <input type="hidden" name="payment_id" id="payment_id" value="">
                       <div class="form-group">
                           <label for="name">Your Name</label>
                           <input type="text" name="name" class="form-control" id="name" placeholder="Your Name">
@@ -125,7 +126,7 @@
                           <div class="col-md-6">
                               <div class="form-group">
                                   <div class="input-group date" id="date3" data-target-input="nearest">
-                                      <input type="text" name="check_in" class="form-control datetimepicker-input" data-target="#date3" />
+                                      <input type="text" name="check_in" id="check_in" class="form-control datetimepicker-input" data-target="#date3" />
                                       <div class="input-group-append" data-target="#date3" data-toggle="datetimepicker">
                                           <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                       </div>
@@ -136,7 +137,7 @@
                           <div class="col-md-6">
                               <div class="form-group">
                                   <div class="input-group date" id="date4" data-target-input="nearest">
-                                      <input type="text" name="check_out" class="form-control datetimepicker-input" data-target="#date4" />
+                                      <input type="text" name="check_out" id="check_out" class="form-control datetimepicker-input" data-target="#date4" />
                                       <div class="input-group-append" data-target="#date4" data-toggle="datetimepicker">
                                           <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                       </div>
@@ -169,7 +170,7 @@
       </div>
   </div>
   <!-- Your other HTML code here -->
-
+  <!-- Add the Bootstrap modal markup -->
   <!-- Include jQuery library -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <!-- Add the SweetAlert CSS -->
@@ -191,6 +192,7 @@
       }
 
       $(document).ready(function() {
+
           // Click event handler for the "Submit" button
           $("#booking-form-btn").on("click", function() {
               const paymentMethod = $("input[name='payment_method']:checked").val();
@@ -225,103 +227,90 @@
                   });
               }
           });
+
+
+          function initiateRazorpayPayment() {
+              var Name = $('#name').val();
+              var Email = $('#email').val();
+              var Number = $('#Number').val();
+              var Price = $('#price').val();
+              var roomcode = $('#room_code').val();
+              const options = {
+                  key: razorpayApiKey,
+                  amount: Price * 100, // Replace with the actual amount in paise (example: 1000 paise = ₹10)
+                  currency: "INR",
+                  name: "Hotal management",
+                  description: "Payment for Room Booking",
+                  // Add any additional options and parameters as needed
+
+                  handler: function(response) {
+                      // Handle the payment response
+                      handleRazorpayResponse(response);
+                  },
+                  prefill: {
+                      email: Email,
+                      contact: Number,
+                      name: Name,
+
+                      // Add any other pre-filled customer details if needed
+                  },
+              };
+
+              // Open the Razorpay payment gateway
+              const razorpayInstance = new Razorpay(options);
+              razorpayInstance.open();
+          }
+
+
+
+          function handleRazorpayResponse(response) {
+              // $("#payment_id").val();
+              var Name = $('#name').val();
+              var Email = $('#email').val();
+              var Number = $('#number').val();
+              var Price = $('#price').val();
+              const paymentMethod = $("input[name='payment_method']:checked").val();
+              var roomcode = $('#room_code').val();
+              var checkout = $('#check_out').val();
+              var checkin = $('#check_out').val();
+              $.ajax({
+                  url: "/process-cash-payment",
+                  type: "POST",
+                  headers: {
+                      "X-CSRF-TOKEN": getCSRFToken(),
+                  },
+                  data: {
+                      payment_id: response.razorpay_payment_id,
+                      name: Name,
+                      email: Email,
+                      number: Number,
+                      price: Price,
+                      payment_method: paymentMethod,
+                      room_code: roomcode,
+                      check_out: checkout,
+                      check_in: checkin,
+                  },
+                  success: function(data) {
+                      // Handle the success response from the server if needed
+                      Swal.fire({
+                          icon: 'success',
+                          title: 'Payment Successful',
+                          text: 'Your payment has been successfully processed!',
+                      }).then(function() {
+                          // Reload the page after the user clicks "OK"
+                          location.reload();
+                      });
+                      console.log("Payment details stored successfully:", data);
+                  },
+                  error: function(error) {
+                      // Handle the error response from the server if needed
+                      console.error("Error storing payment details:", error);
+                  },
+              });
+          }
+
       });
-
-
-      function initiateRazorpayPayment() {
-          var Name = $('#name').val();
-          var Email = $('#email').val();
-          var Number = $('#Number').val();
-          var Price = $('#price').val();
-          const options = {
-              key: razorpayApiKey,
-              amount: Price * 100, // Replace with the actual amount in paise (example: 1000 paise = ₹10)
-              currency: "INR",
-              name: "Hotal management",
-              description: "Payment for Room Booking",
-              // Add any additional options and parameters as needed
-
-              handler: function(response) {
-                  console.log(response);
-                  console.log("Payment successful!");
-              },
-              prefill: {
-                  email: "customer@example.com",
-                  contact: "customer_contact_number",
-                  // Add any other pre-filled customer details if needed
-              },
-          };
-
-          // Open the Razorpay payment gateway
-          const razorpayInstance = new Razorpay(options);
-          razorpayInstance.open();
-      }
   </script>
-  <!-- Include SweetAlert library -->
-  <script>
-  $(document).ready(function() {
-    $("#email-form").submit(function(event) {
-      event.preventDefault();
-      const email = $("#email").val();
-
-      // Make AJAX request to send email for OTP verification
-      $.ajax({
-        url: "/send-otp",
-        type: "POST",
-        data: { email: email },
-        success: function(response) {
-          // Show Swal fire to get OTP from the user
-          Swal.fire({
-            title: 'Enter OTP',
-            input: 'text',
-            inputLabel: 'Enter OTP:',
-            inputAttributes: {
-              autocapitalize: 'off'
-            },
-            showCancelButton: true,
-            confirmButtonText: 'Submit',
-            showLoaderOnConfirm: true,
-            preConfirm: (otp) => {
-              return fetch('/verify-otp', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({ email: email, otp: otp })
-              })
-              .then(response => {
-                if (!response.ok) {
-                  throw new Error(response.statusText)
-                }
-                return response.json()
-              })
-              .catch(error => {
-                Swal.showValidationMessage(
-                  `OTP verification failed: ${error}`
-                )
-              })
-            },
-            allowOutsideClick: () => !Swal.isLoading()
-          }).then((result) => {
-            if (result.isConfirmed) {
-              // Form submission is allowed
-              $("#email-form").submit();
-            }
-          });
-        },
-        error: function(error) {
-          // Show error message using SweetAlert
-          Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: "Failed to send OTP. Please try again later.",
-          });
-        },
-      });
-    });
-  });
-</script>
 
 
   <!-- JavaScript Libraries -->
