@@ -150,7 +150,7 @@
             <h1 class="mb-5">Explore Our <span class="text-primary text-uppercase">Rooms</span></h1>
         </div>
         <div class="row g-4">
-            @foreach($room_details as $room)
+            @foreach($room_details as $key => $room)
             <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                 <div class="room-item shadow rounded overflow-hidden">
                     <div class="position-relative">
@@ -170,16 +170,20 @@
                         </div>
                         <div class="d-flex mb-3">
                             <small class="border-end me-3 pe-3"><i class="fa fa-bed text-primary me-2"></i>{{$room->RoomType->name}}</small>
-                            {{-- <small class="border-end me-3 pe-3"><i class="fa fa-bath text-primary me-2"></i>2 Bath</small> --}}
+                            <small class="border-end me-3 pe-3">
+                                <i class="fa fa-bath text-primary me-2" id="room_code1"></i>{{$room->room_code}}
+                            </small>
                             <small><i class="fa fa-wifi text-primary me-2"></i>Wifi</small>
                         </div>
                         <p class="text-body mb-3">{{$room->des}}</p>
+
                         <div class="d-flex justify-content-between">
                             <a class="btn btn-sm btn-primary rounded py-2 px-4" href="">View Detail</a>
                             @if($room->available_count == 0)
                             <a class="btn btn-sm btn-dark rounded py-2 px-4">Not Available</a>
                             @else
-                            <a class="btn btn-sm btn-dark rounded py-2 px-4" href="#" id="bookNowBtn" data-toggle="modal" data-target="#bookingModal">Book Now</a>
+                            <!-- Update the href attribute to include the room_code as a parameter -->
+                            <a class="btn btn-sm btn-dark rounded py-2 px-4" href="#" id="bookNowBtn" onclick="test('{{ addslashes($room->room_code) }}')" data-toggle="modal" data-target="#bookingModal">Book Now</a>
                             @endif
                         </div>
                     </div>

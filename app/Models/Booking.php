@@ -19,4 +19,8 @@ class Booking extends Model
         'room_code',
         'status',
     ];
+
+    public function Room_code() {
+        return $this->hasOne('App\Models\Room', 'room_code', 'room_code')->with('hotal','RoomType');
+    }
 }

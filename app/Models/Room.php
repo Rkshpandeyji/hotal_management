@@ -24,4 +24,7 @@ class Room extends Model
     public function RoomType() {
         return $this->hasOne('App\Models\RoomType', 'id', 'room_type_id');
     }
+    public function hotal() {
+        return $this->hasOne('App\Models\hotal', 'id', 'hotal_id');
+    }
 }

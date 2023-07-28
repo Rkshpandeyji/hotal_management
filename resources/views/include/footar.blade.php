@@ -92,7 +92,11 @@
   <!-- Back to Top -->
   <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
   </div>
+  <!-- <div class="modal fade" id="bookingModal" tabindex="-1" role="dialog" aria-labelledby="bookingModalLabel" aria-hidden="true"> -->
+  <!-- Add the modal markup with ID 'bookingModal' -->
   <div class="modal fade" id="bookingModal" tabindex="-1" role="dialog" aria-labelledby="bookingModalLabel" aria-hidden="true">
+      <!-- Modal content goes here -->
+
 
       <!-- <input type="hidden" name="payment_method" id="payment_method" value=""> -->
       <div class="modal-dialog" role="document">
@@ -106,7 +110,7 @@
               <div class="modal-body">
                   <form id="formdata">
                       <!-- Your form fields here -->
-                      <input type="hidden" id="room_code" name="room_code" value="{{$room->room_code}}">
+                      <input type="hidden" id="room_code" name="room_code" value="">
                       <input type="hidden" id="price" name="price" value="{{$room->price}}">
                       <input type="hidden" name="payment_id" id="payment_id" value="">
                       <div class="form-group">
@@ -192,6 +196,9 @@
       }
 
       $(document).ready(function() {
+          setTimeout(function() {
+              hitCronRoute(); // Call the function to hit the /Cron route
+          }, 10000);
 
           // Click event handler for the "Submit" button
           $("#booking-form-btn").on("click", function() {
@@ -311,6 +318,43 @@
 
       });
   </script>
+  <script>
+      function hitCronRoute() {
+          $.ajax({
+              url: '/Cron',
+              method: 'GET',
+              success: function(data) {
+                  console.log('Route hit successfully.');
+              },
+              error: function(xhr, status, error) {
+                  console.error('Error hitting the route:', error);
+              }
+          });
+      }
+
+      function test(room_code) {
+          // Set the value of the hidden input field with the room_code
+          $("#room_code").val(room_code);
+
+          // Get the room_code value from the hidden input field
+          const roomCodeValue = $("#room_code").val();
+
+          // Alert the room_code value
+          alert(roomCodeValue);
+      }
+
+      //   $(document).ready(function() {
+      //     // Click event handler for the "Book Now" button
+      //     $("#bookNowBtn").on("click", function() {
+      //         // Get the room_code value from the small element
+
+
+      //         // Alert the room_code value
+      //         
+      //     });
+      // });
+  </script>
+
 
 
   <!-- JavaScript Libraries -->

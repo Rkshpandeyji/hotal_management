@@ -40,6 +40,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'customguard' => [
+            'driver' => 'session',
+            'provider' => 'users', // Replace 'users' with the name of your users table or provider
+        ],
     ],
 
     /*
